@@ -10,7 +10,7 @@ pub fn input() -> Result<String, Box<dyn Error>> {
     Ok(str_path.trim().to_string())
 }
 
-/// Take string path? return file reader
+/// Take &str path, return file reader
 pub fn read_csv(str_path: &str) -> Result<Reader<File>, Box<dyn Error>> {
     let path = Path::new(&str_path);
     let file = csv::Reader::from_path(path)?;
