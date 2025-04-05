@@ -1,5 +1,4 @@
-use std::{io, fs::File, path::Path};
-use csv::Reader;
+use std::{collections::HashMap, io, path::Path};
 use std::error::Error;
 
 /// Read single line from console, return trimmed String
@@ -11,9 +10,16 @@ pub fn input() -> Result<String, Box<dyn Error>> {
 }
 
 /// Take &str path, return file reader
-pub fn read_csv(str_path: &str) -> Result<Reader<File>, Box<dyn Error>> {
+pub fn read_csv(str_path: &str) -> Result<Vec<HashMap<String, f32>>, Box<dyn Error>> {
     let path = Path::new(&str_path);
-    let file = csv::Reader::from_path(path)?;
+    let mut file = csv::Reader::from_path(path)?;
 
-    Ok(file)
+    let mut result = Vec::<HashMap<String, f32>>::new();
+    for row in file.deserialize() {
+        let record: HashMap<String, f32> = row?;
+        result.push(record);
+    }
+
+
+    Ok(result)
 }
